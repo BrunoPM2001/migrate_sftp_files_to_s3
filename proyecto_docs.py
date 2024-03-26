@@ -16,7 +16,11 @@ def download_file(remote_path):
     client.connect(hostname = os.getenv('SFTP_HOST'), username = os.getenv('SFTP_USER'), password = os.getenv('SFTP_PASS'))
     sftp = client.open_sftp()
 
-    # Get file
+    # Create dir and get file
+    i = remote_path.rfind('/')
+    folder = remote_path[:i]
+    if not os.path.exists(os.getenv('LOC_DIR') + folder):
+      os.makedirs(os.getenv('LOC_DIR') + folder)
     sftp.get(remotepath = os.getenv('SFTP_DIR') + remote_path, localpath = os.getenv('LOC_DIR') + remote_path)
 
     print(f"Downloaded! {remote_path}")
